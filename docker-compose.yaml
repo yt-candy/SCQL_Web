@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  scdb:
+    image: secretflow/scql:latest
+    environment:
+      - SCQL_ROOT_PASSWORD=root
+    command:
+      - /home/admin/bin/scdbserver
+      - -config=/home/admin/configs/config.yml
+    restart: always
+    ports:
+      - 8080
+    volumes:
+      - ./config.yml:/home/admin/configs/config.yml
+      - ./toy_grm.json:/home/admin/configs/toy_grm.json
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=testpass
+      - MYSQL_DATABASE=scdb
+      - TZ=Asia/Shanghai
+    healthcheck:
+      retries: 10
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - -h
+        - mysql
+      timeout: 20s
+    expose:
+      - "3306"
+    restart: always
