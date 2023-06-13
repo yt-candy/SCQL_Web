@@ -16,6 +16,7 @@
 ## 问题
 - Hall.html提交表单被拒绝访问
 <img width="1206" alt="截屏2023-06-14 01 50 26" src="https://github.com/DINOREXNB/SCQL_Web/assets/130140331/e98531db-6616-40b1-a004-2d8112b6b580">
+
 - ~~部署SCDB后，终端无法检测到SCDB容器~~
 ```
 2023-06-12 01:59:07 2023-06-12 07:59:07.6127 INFO main.go:85 Starting to read config file: /home/admin/configs/config.yml
