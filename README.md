@@ -1,7 +1,7 @@
 # SCQL_Web搭建记录
 # TODO：
-- [ x] 本地部署SCDB
-- [ x] 本地部署SCQL engine
+- [x] 本地部署SCDB
+- [x] 本地部署SCQL engine
 - [ ] 将请求转换为API文档要求的请求结构
 - [ ] 实现SCDB接收网页端发送的POST请求
 - [ ] 注册时检测新账户名是否已被注册过
@@ -9,7 +9,10 @@
 - [ ] 实现多方（三方）数据查询
 
 # 2023.6.13
-- 在docker compose中SCDB部署完成
+## 实现
+- docker compose中SCDB部署，engine部署
+
+## 问题
 - ~~部署SCDB后，终端无法检测到SCDB容器~~
 ```
 2023-06-12 01:59:07 2023-06-12 07:59:07.6127 INFO main.go:85 Starting to read config file: /home/admin/configs/config.yml
@@ -22,9 +25,6 @@
 2023-06-12 01:59:20 2023-06-12 07:59:20.6127 INFO logger.go:147 /home/admin/dev/pkg/scdb/server/server.go:97
 2023-06-12 01:59:20 [error] failed to initialize database, got error dial tcp 172.20.0.3:3306: connect: connection refused
 2023-06-12 01:59:20 2023-06-12 07:59:20.6127 FATAL main.go:102 Failed to connect to database and bootstrap it: dial tcp 172.20.0.3:3306: connect: connection refused
-2023-06-12 01:59:23 2023-06-12 07:59:23.6127 INFO main.go:85 Starting to read config file: /home/admin/configs/config.yml
-2023-06-12 01:59:23 2023-06-12 07:59:23.6127 INFO main.go:98 Starting to connect to database and do bootstrap if necessary...
-2023-06-12 01:59:23 2023-06-12 07:59:23.6127 INFO main.go:122 Starting to serve request with http...
 ```
 # 2023.6.11
 ## 实现
