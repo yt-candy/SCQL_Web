@@ -2,7 +2,7 @@
 # TODO：
 - [x] 本地部署SCDB
 - [x] 本地部署SCQL engine
-- [ ] 将请求转换为API文档要求的请求结构
+- [ ] 将请求转换为API文档要求的JSON结构
 - [ ] 实现SCDB接收网页端发送的POST请求
 - [x] 注册时检测新账户名是否已被注册过
 - [ ] 新用户信息主钥ID生成方式
@@ -14,6 +14,8 @@
 - 注册用户名检查
 
 ## 问题
+- Hall.html提交表单被拒绝访问
+<img width="1206" alt="截屏2023-06-14 01 50 26" src="https://github.com/DINOREXNB/SCQL_Web/assets/130140331/e98531db-6616-40b1-a004-2d8112b6b580">
 - ~~部署SCDB后，终端无法检测到SCDB容器~~
 ```
 2023-06-12 01:59:07 2023-06-12 07:59:07.6127 INFO main.go:85 Starting to read config file: /home/admin/configs/config.yml
