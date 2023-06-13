@@ -156,11 +156,15 @@ body {
     <div class="block-container">
         <div class="block block1" id="database">
         <!-- 第一个大板块内容 -->
-        Database
+        <div>Database1</div><hr>
+        <div>Database2</div><hr>
+        <div>Database3</div><hr>
         </div>
         <div class="block block2">
         <!-- 第二个大板块内容 -->
-        Table
+        <div>Table1</div><hr>
+        <div>Table2</div><hr>
+        <div>Table3</div><hr>
         </div>
         <div class="block block3">
         <!-- 第三个大板块内容 -->
@@ -168,15 +172,16 @@ body {
                 <button id="db-table-button">数据库/表</button>
                 <button id="data-processing-button">数据处理</button>
               </div>
-            <div class="interaction" id="interaction">
+            <div class="interaction" id="interaction"><br>
                 <!-- 用户与系统交互内容 -->
             </div>
             <div class="input-area">
                 <!-- 用户输入区域 -->
-                <form action="http://127.0.0.1:8080/public/submit_query" method="POST" style="height: 100%;">
+                <!-- action="http://127.0.0.1:8080/public/submit_query" -->
+                <!-- <form  method="post" action="" style="height: 100%;"> -->
                 <textarea class="form-textarea" id="input-textarea" placeholder="请先选择功能模块[数据库/表操作] / [数据处理]" name="query"></textarea>
                 <button type="submit" class="form-submit" id="submit">提交</button>
-                </form>
+                <!-- </form> -->
             </div>
         </div>
     </div>  
@@ -187,8 +192,8 @@ body {
   const dbTableButton = document.getElementById('db-table-button');
   const dataProcessingButton = document.getElementById('data-processing-button');
   const inputTextarea = document.getElementById('input-textarea');
-  // const btn=document.getElementById("submit");
-  // const interaciton=document.getElementById("interaction");
+  const btn=document.getElementById("submit");
+  const interaciton=document.getElementById("interaction");
 
    // 点击 "数据库/表" 按钮时修改输入区域的期待输入内容
    dbTableButton.addEventListener('click', function() {
@@ -198,6 +203,12 @@ body {
    // 点击 "数据处理" 按钮时修改输入区域的期待输入内容
    dataProcessingButton.addEventListener('click', function() {
      inputTextarea.placeholder = "SELECT [DISTINCT] select_expr [, select_expr] ... [FROM table_reference] [WHERE where_condition] [GROUP BY column]\nGRANT SELECT/REVOKE [CONSTRAINTS]([DATA]) ON [TABLE] TO [USER]";
+   });
+
+   //临时：点击提交后将输入内容显示到交互区
+   btn.addEventListener("click",()=>{
+    interaciton.innerHTML=interaciton.innerHTML+`<div>> ${inputTextarea.value}</div><hr>`;
+    inputTextarea.value="";
    });
   </script>
 </body>
