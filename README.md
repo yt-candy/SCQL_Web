@@ -7,7 +7,7 @@
 - [ ] 新用户信息主钥ID生成方式
 - [ ] 实现多方（三方）数据查询
 
-# 2023.6.12
+# 2023.6.13
 - 部署SCDB后，终端无法检测到SCDB容器
 ```
 2023-06-12 01:59:07 2023-06-12 07:59:07.6127 INFO main.go:85 Starting to read config file: /home/admin/configs/config.yml
