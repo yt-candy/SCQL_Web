@@ -6,6 +6,7 @@ var url=require("url");
 var router=require("./router");
 
 var http=require("http");
+const { checkPrime } = require("crypto");
 var app=express();
 var router = express.Router();//创建路由实例
 const ip="127.0.0.1";
@@ -121,11 +122,27 @@ app.post('/process-register',(req,res)=>{
   container = querystring.parse(container);
   console.log(container);
   //检查注册时两次密码是否一致
-  //TODO:检测账号是否已存在
   if(container.password!=container.pass_confirm){
+    console.log("两次密码输入不一致");
     container=[];
     res.redirect(`http://${ip}:${port}/RegisterFail.html`);
   }else{
+  checkAccountSql=`select * from userinfo where account="${container.username}"`;
+  console.log("checkAccountSql:"+checkAccountSql);
+  //检测注册账号用户名是否已存在
+  connectInfo.query(checkAccountSql,(err,result,fields)=>{
+    if(err){
+      console.log('[SELECT ERROR] - ',err.message);
+      container=[];
+      return;
+    }
+    if(result.length!=0){
+      console.log("待注册用户名已存在！");
+      container=[];
+      res.redirect(`http://${ip}:${port}/RegisterFail.html`);
+      return;
+    }
+  });
   //TODO：生成主钥
 
   //将注册信息存入user数据库
@@ -153,11 +170,12 @@ app.post('/process-register',(req,res)=>{
 
 
 /**************************SCQL主界面******************************/
-//TODO：显示数据库与数据库对应表
+//TODO：显示数据库与数据库对应表,显示交互内容（用js实现？）
 
 
 /**********************接受主界面查询语句****************************/
 //TODO：与SCDB对接
+/*
 let sqlHall="";
 let containerHall=[];
 app.post('/process-query',(req,res)=>{
@@ -174,7 +192,7 @@ app.post('/process-query',(req,res)=>{
   //查询后清空containerHall
   containerHall=[];
   });
-});
+});*/
 
 //启动服务器
 var server=app.listen(port,()=>{});
