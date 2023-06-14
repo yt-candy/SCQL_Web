@@ -9,6 +9,15 @@
 - [ ] 实现多方（三方）数据查询
 - [ ] 实现用户数据存储（session，cookie）
 
+# 2023.6.14
+## 问题
+- 使用xhr对象发送HTTP请求到"http://127.0.0.1:8080/public/submit_and_get" 显示无法找到该地址，但是docker的scdb容器中显示
+```
+INFO main.go:122 Starting to serve request with http...
+```
+（已经将容器内部8080端口映射到主机的8080端口）
+
+<img width="625" alt="截屏2023-06-15 05 59 49" src="https://github.com/DINOREXNB/SCQL_Web/assets/130140331/9cf520bb-f3a4-49aa-8042-768e50efa011">
 
 # 2023.6.13
 ## 实现
