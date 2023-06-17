@@ -146,7 +146,7 @@ body {
     <!-- <a href="./Login.html">返回登录界面</a> -->
   <div class="info-bar">
     <div class="logo">SCQL</div>
-    <div class="user">Username</div>
+    <div class="user" id="username">username</div>
     <div class="avatar" ></div>
     <!-- 存放头像 -->
     <!-- <img src="/images/head2.png" alt="" size="20" height="20" width="20" class="avatar"> -->
@@ -177,9 +177,14 @@ body {
             </div>
             <div class="input-area">
                 <!-- 用户输入区域 -->
-                <!-- action="http://127.0.0.1:8080/public/submit_query" -->
-                <!-- <form  method="post" action="" style="height: 100%;"> -->
+                <!-- <form method="post" style="height: 100%;" action="http://127.0.0.1:8080/public/submit_and_get"> -->
+                <!-- <form action="/ww" style="height: 100%;" method="post"> -->
+                <input type="text" name="user[user][account_system_type]" value="NATIVE_USER">
+                <input type="text" name="user[user][native_user][name]" value="someuser">
+                <input type="text" name="user[user][native_user][password]" id="password" value="somepassword">
+                <input type="text" name="user[grm_token]" id="token" value="sometoken">
                 <textarea class="form-textarea" id="input-textarea" placeholder="请先选择功能模块[数据库/表操作] / [数据处理]" name="query"></textarea>
+                <input type="text" name="biz_request_id" value="1234">
                 <button type="submit" class="form-submit" id="submit">提交</button>
                 <!-- </form> -->
             </div>
@@ -205,11 +210,46 @@ body {
      inputTextarea.placeholder = "SELECT [DISTINCT] select_expr [, select_expr] ... [FROM table_reference] [WHERE where_condition] [GROUP BY column]\nGRANT SELECT/REVOKE [CONSTRAINTS]([DATA]) ON [TABLE] TO [USER]";
    });
 
-   //临时：点击提交后将输入内容显示到交互区
+  //  //临时：点击提交后将输入内容显示到交互区
    btn.addEventListener("click",()=>{
+    //网页更新查询内容
     interaciton.innerHTML=interaciton.innerHTML+`<div>> ${inputTextarea.value}</div><hr>`;
+     //获取表单数据
+    var formData = {
+    "user": {
+      "user": {
+        "account_system_type": "NATIVE_USER",
+        "native_user": {
+          "name": document.getElementById("username").value,
+          "password": document.getElementById("password").value
+        }
+      },
+      "grm_token": document.getElementById("token").value
+    },
+    "query": document.getElementById("input-textarea").value,
+    "biz_request_id": "1234"
+    };
+    var jsonData = JSON.stringify(formData);
+    var xhr = new XMLHttpRequest();
+    console.log("发送请求...");
+    xhr.open("POST", "http://127.0.0.1:8080/public/submit_and_get");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
+        console.log(response); // this will log the response object you provided
+      } else {
+        console.error('Request failed.  Returned status of', xhr.status);
+      }
+    };
+    xhr.send(jsonData);
+    console.log("JSONdata:");
+    console.log(jsonData);
+    console.log("执行完毕！");
+    //清空输入区域
     inputTextarea.value="";
    });
+ 
   </script>
 </body>
 </html>
