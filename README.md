@@ -11,13 +11,13 @@
 - [ ] 跨域问题解决
 # 2023.6.18
 ## 问题
-- 跨域问题，未实现CORS
+- （SCDB服务器已经可以接收到请求）由于端口不同发生跨域问题，未实现CORS
 
 <img width="1171" alt="截屏2023-06-18 17 37 34" src="https://github.com/DINOREXNB/SCQL_Web/assets/130140331/5785c96f-d7aa-454d-8338-81fea14aeb1a">
 
 # 2023.6.14
 ## 问题
-- 使用xhr对象发送HTTP请求到"http://127.0.0.1:8080/public/submit_and_get" 显示无法找到该地址，但是docker的scdb容器中显示
+- ~~使用xhr对象发送HTTP请求到"http://127.0.0.1:8080/public/submit_and_get" 显示无法找到该地址，但是docker的scdb容器中显示~~
 ```
 INFO main.go:122 Starting to serve request with http...
 ```
