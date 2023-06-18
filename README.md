@@ -8,6 +8,12 @@
 - [ ] 新用户信息主钥ID生成方式
 - [ ] 实现多方（三方）数据查询
 - [ ] 实现用户数据存储（session，cookie）
+- [ ] 跨域问题解决
+# 2023.6.18
+## 问题
+- 跨域问题，需要借助CORS来解决
+
+<img width="1171" alt="截屏2023-06-18 17 37 34" src="https://github.com/DINOREXNB/SCQL_Web/assets/130140331/5785c96f-d7aa-454d-8338-81fea14aeb1a">
 
 # 2023.6.14
 ## 问题
