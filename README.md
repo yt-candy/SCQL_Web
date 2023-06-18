@@ -31,7 +31,7 @@ INFO main.go:122 Starting to serve request with http...
 - 注册用户名检查
 
 ## 问题
-- Hall.html提交表单被拒绝访问
+- ~~Hall.html提交表单被拒绝访问~~
 <img width="1206" alt="截屏2023-06-14 01 50 26" src="https://github.com/DINOREXNB/SCQL_Web/assets/130140331/e98531db-6616-40b1-a004-2d8112b6b580">
 
 - ~~部署SCDB后，终端无法检测到SCDB容器~~
