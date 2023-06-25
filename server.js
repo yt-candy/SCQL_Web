@@ -4,12 +4,17 @@ var bodyParser=require('body-parser');
 var mysql=require("mysql2");
 var url=require("url");
 var router=require("./router");
-
+const session = require('express-session');
+var ejs=require("ejs");
+var cors = require('cors');
 var http=require("http");
 const { checkPrime } = require("crypto");
+
 var app=express();
+app.set('view engine', 'ejs');//设置EJS作为视图引擎
+app.use(cors());//实现cors
 var router = express.Router();//创建路由实例
-const ip="127.0.0.1";
+const ip="localhost";
 const port=1145;
 const originalUser=4;
 /*********************创建服务器**********************/
@@ -33,6 +38,17 @@ connectInfo.connect((err)=>{
     console.log('[query] - :'+err);
   }
   console.log("MySQL connection succeed!");
+});
+//控制台显示已注册用户信息
+sqlDemo="select * from userinfo;";
+connectInfo.query(sqlDemo,(err,result,fields)=>{
+  if(err){
+    console.log('[SELECT ERROR] - ',err.message);
+    container=[];
+    return;
+  }
+  console.log("userinfo:");
+  console.log(result);
 });
 /*********************访问页面**********************/
 app.use('/SCQL_Web',express.static('SCQL_Web'))
@@ -70,8 +86,16 @@ app.get('/RegisterFail.html' , (req , res)=>{
 })
 
 /*********************账号密码验证**********************/
+var userAccount;
 var sql="";
 let body = [];
+//添加session中间件
+app.use(session({
+  secret: '114514',//用于签署session ID的密钥 
+  cookie:{maxAge:80000},//cookie（待修改）
+  resave: false,
+  saveUninitialized: false,
+}));
 app.post('/process-login',(req,res)=>{
   req.on("data", (chunk) => {
     console.log("收到表单：");
@@ -83,6 +107,7 @@ app.post('/process-login',(req,res)=>{
   body = Buffer.concat(body).toString();
   body = querystring.parse(body);
   console.log(body);
+  //生成查询语句
   sql=`select * from user.userinfo where account="${body.username}" and password="${body.password}";`;
   console.log("query: "+sql);
   connectInfo.query(sql,(err,result,fields)=>{
@@ -98,17 +123,29 @@ app.post('/process-login',(req,res)=>{
       res.redirect(`http://${ip}:${port}/LoginFail.html`);
     }else{
       console.log("登陆成功！");
+      //将用户信息存入session
+      userAccount={'username':body.username};
+      req.session.username=userAccount;
+      console.log(req.session.username);
       //重置body
       body=[];
+      // res.render('Hall.html', { user: req.session.username });
       res.redirect(`http://${ip}:${port}/Hall.html`);      
     }
   })
   });
 })
+//前端获取已登录的用户名
+app.get('/get-username', (req, res)=>{
+  console.log("登录用户为:"+userAccount.username);
+  Name=userAccount.username;
+  res.json({Name});
+})
 
 /*********************注册账号*************************/
 let container=[];
 let insertsql="";
+//四个初始用户
 let newUserID=originalUser;
 app.post('/process-register',(req,res)=>{
   req.on("data",(chunk)=>{
@@ -141,32 +178,40 @@ app.post('/process-register',(req,res)=>{
       container=[];
       res.redirect(`http://${ip}:${port}/RegisterFail.html`);
       return;
+    }else{
+      //TODO：生成主钥
+      
+      //将注册信息存入user数据库
+      newUserID++;
+      console.log("newUserID:",newUserID);
+      insertsql= `INSERT INTO userinfo VALUES (${newUserID},'${container.username}','${container.password}')`;
+      newUserID+=1;
+      console.log("query: "+insertsql);
+      connectInfo.query(insertsql,(err,result,fields)=>{
+        if(err){
+          console.log('[SELECT ERROR] - ',err.message);
+          container=[];
+          return;
+        }
+        console.log("注册成功！");
+        container=[];
+        res.redirect(`http://${ip}:${port}/RegisterSucceed.html`);
+  })
     }
   });
-  //TODO：生成主钥
-
-  //将注册信息存入user数据库
-  newUserID++;
-  console.log("newUserID:",newUserID);
-  insertsql= `INSERT INTO userinfo VALUES (${newUserID},'${container.username}','${container.password}')`;
-  newUserID+=1;
-  console.log("query: "+insertsql);
-  connectInfo.query(insertsql,(err,result,fields)=>{
-    if(err){
-      console.log('[SELECT ERROR] - ',err.message);
-      container=[];
-      return;
-    }
-    console.log("注册成功！");
-    container=[];
-    res.redirect(`http://${ip}:${port}/RegisterSucceed.html`);
-  })
+  
   } 
   });
 
 });
 /***************************注销账号***************************/
 //TODO：如果添加注销功能，要修改注册时获取id的方法
+
+
+
+
+
+
 
 
 /**************************SCQL主界面******************************/
@@ -193,6 +238,11 @@ app.post('/process-query',(req,res)=>{
   containerHall=[];
   });
 });*/
-
+// app.post('/ww', (req, res) => {
+//   const requestData = req.body;
+//   console.log("requestdata:");
+//   console.log(JSON.stringify(requestData));
+//   res.send('请求已收到');
+// });
 //启动服务器
 var server=app.listen(port,()=>{});
