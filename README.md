@@ -9,6 +9,22 @@
 - [ ] 新用户信息主钥ID生成方式
 - [ ] 实现多方（三方）数据查询
 - [ ] 实现账号注销功能
+- [ ] 将数据库返回消息动态显示在交互区
+
+# Precondition
+- 下载nodejs
+- 使用npm下载以下模块
+  - axios@1.4.0
+  - body-parser@1.20.2
+  - cors@2.8.5
+  - ejs@3.1.9
+  - express-session@1.17.3
+  - express-static@1.2.6
+  - express@4.18.2
+  - mysql@2.18.1
+  - mysql2@3.3.3
+  - vue-wxlogin@1.0.4
+
 # 2023.6.19
 ## 实现
 - 用户登陆后在主界面加载用户信息
