@@ -8,7 +8,7 @@ const session = require('express-session');
 var ejs=require("ejs");
 var cors = require('cors');
 var http=require("http");
-const { checkPrime } = require("crypto");
+const { checkPrime, generateKey } = require("crypto");
 
 var app=express();
 app.set('view engine', 'ejs');//设置EJS作为视图引擎
@@ -179,8 +179,6 @@ app.post('/process-register',(req,res)=>{
       res.redirect(`http://${ip}:${port}/RegisterFail.html`);
       return;
     }else{
-      //TODO：生成主钥
-      
       //将注册信息存入user数据库
       newUserID++;
       console.log("newUserID:",newUserID);
@@ -205,14 +203,30 @@ app.post('/process-register',(req,res)=>{
 
 });
 /***************************注销账号***************************/
-//TODO：如果添加注销功能，要修改注册时获取id的方法
-
-
-
-
-
-
-
+let tologoff=[];
+app.post('/process-logoff',(req,res)=>{
+  req.on("data",(chunk)=>{
+    console.log("收到注销请求:");
+    tologoff.push(chunk);
+    console.log(`username:${chunk}`)
+  });
+  req.on("end",()=>{
+    tologoff = Buffer.concat(tologoff).toString();
+    tologoff = querystring.parse(tologoff);
+    console.log(tologoff.username);
+    logoffsql=`DELETE FROM userinfo where account="${tologoff.username}"`;
+    connectInfo.query(logoffsql,(err,result,fields)=>{
+      if(err){
+        console.log('[DELETE ERROR] - ',err.message);
+        tologoff=[];
+        return;
+      }
+      console.log("删除成功！");
+      tologoff=[];
+      // res.redirect(`http://${ip}:${port}/Index.html`);
+    })
+  })
+})
 
 /**************************SCQL主界面******************************/
 //TODO：显示数据库与数据库对应表,显示交互内容（用js实现？）
