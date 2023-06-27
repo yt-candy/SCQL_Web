@@ -16,16 +16,17 @@
 # Precondition
 - 下载nodejs
 - 使用npm下载以下模块
-  - axios@1.4.0
-  - body-parser@1.20.2
-  - cors@2.8.5
-  - ejs@3.1.9
-  - express-session@1.17.3
-  - express-static@1.2.6
-  - express@4.18.2
-  - mysql@2.18.1
-  - mysql2@3.3.3
-  - vue-wxlogin@1.0.4
+```
+  npm install axios
+  npm install body-parser
+  npm install cors
+  npm install ejs
+  npm install express-session
+  npm install express-static
+  npm install express
+  npm install mysql2
+  npm install vue-wxlogin
+```
 # 2023.6.26
 ## 实现
 - 账号注销
