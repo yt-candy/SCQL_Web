@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>文件管理器</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <style>
+    /* GitHub风格 */
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f6f8fa;
+    }
+
+    /* 页面容器 */
+    .container {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 侧边栏 */
+    .sidebar {
+      flex: 0 0 250px;
+      background-color: #fafbfc;
+      border-right: 1px solid #e1e4e8;
+    }
+
+    /* 主要内容区域 */
+    .content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    /* 文件夹列表 */
+    .folder-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* 文件夹列表项 */
+    .folder-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    /* 文件夹图标 */
+    .folder-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      background: url(folder-icon.png) no-repeat center center;
+    }
+
+    /* 文件夹名称 */
+    .folder-name {
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <ul class="folder-list">
+        <li class="folder-item">
+          <div class="folder-icon"></div>
+          <div class="folder-name">文件夹1</div>
+        </li>
+        <li class="folder-item">
+          <div class="folder-icon"></div>
+          <div class="folder-name">文件夹2</div>
+        </li>
+        <li class="folder-item">
+          <div class="folder-icon"></div>
+          <div class="folder-name">文件夹3</div>
+        </li>
+        <li class="folder-item">
+            <div class="folder-icon"></div>
+            <div class="folder-name">文件夹3</div>
+          </li>
+          <li class="folder-item">
+            <div class="folder-icon"></div>
+            <div class="folder-name">文件夹3</div>
+          </li>
+          <li class="folder-item">
+            <div class="folder-icon"></div>
+            <div class="folder-name">文件夹3</div>
+          </li>
+        <!-- 更多文件夹项... -->
+      </ul>
+    </div>
+    <div class="content">
+      <!-- 文件夹内容显示区域 -->
+    </div>
+  </div>
+</body>
+</html>

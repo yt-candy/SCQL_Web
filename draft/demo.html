@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         .avatar {
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .options {
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            top: 120px;
+            left: 0;
+            width: 100px;
+            background-color: #f1f1f1;
+            padding: 5px;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .options.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <div class="avatar" onmouseover="showOptions()">
+
+    <div class="options" id="options"  onmouseout="hideOptions()">
+        <a href="#" onclick="logout()">登出</a>
+        <br>
+        <a href="#" onclick="logout()">注销</a>
+    </div>
+</div>
+    <script>
+        function showOptions() {
+            var options = document.getElementById("options");
+            options.classList.add("visible");
+        }
+
+        function hideOptions() {
+            var options = document.getElementById("options");
+            options.classList.remove("visible");
+        }
+
+        function logout() {
+            var confirmation = confirm("确定要执行登出或注销操作吗？");
+
+            if (confirmation) {
+                // 在这里执行登出或注销的功能
+                alert("执行登出或注销的功能");
+            }
+        }
+    </script>
+</body>
+</html>
