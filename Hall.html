@@ -275,7 +275,7 @@ body {
   </div>
   <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script>
-  // alert("欢迎！");
+  alert("欢迎！");
    // 获取相关元素
   const dbTableButton = document.getElementById('db-table-button');
   const dataProcessingButton = document.getElementById('data-processing-button');
@@ -283,8 +283,6 @@ body {
   const btn=document.getElementById("submit");
   const interaciton=document.getElementById("interaction");
   const username0=document.getElementById("username");
-  // const logout=document.getElementById("logout");
-  // const logoff=document.getElementById("logoff");
    // 登陆后获取用户名
    fetch('/get-username')
       .then(response => response.json())
