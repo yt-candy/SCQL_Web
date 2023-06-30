@@ -27,6 +27,9 @@
   npm install mysql2
   npm install vue-wxlogin
 ```
+# 2023.6.30
+## 实现
+- 利用nginx服务器进行反向代理解决跨域问题（测试网页可以收到回复）
 # 2023.6.26
 ## 实现
 - 账号注销
