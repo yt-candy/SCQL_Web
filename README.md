@@ -12,20 +12,17 @@
 - [ ] 将数据库返回消息动态显示在交互区
 - [ ] 修改docker容器源码中允许请求头
 - [ ] 登录后加载对应可见数据库以及对应数据库包含的表
-- [ ] 中期报告填写
 # Precondition
 - 下载nodejs
 - 使用npm（nodejs自带）下载以下模块
 ```
   npm install axios
   npm install body-parser
-  npm install cors
   npm install ejs
   npm install express-session
   npm install express-static
   npm install express
   npm install mysql2
-  npm install vue-wxlogin
 ```
 # 2023.6.30
 ## 实现
