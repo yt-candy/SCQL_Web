@@ -216,6 +216,28 @@ body {
   font-family: "黑体",sans-serif;
   text-decoration: none;
 }
+.add{
+  color: white;
+  background-color: black;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  bottom: 10px;
+}
+.add button{
+  width: 40px;
+  height: 40px;
+  color: white;
+  border-radius: 50%;
+  background-color: black;
+  cursor: pointer;
+  font-size: 20px;
+}
+.add button:hover{
+  transition-duration: 0.3s;
+  background-color: #45a049;
+}
  </style>
 </head>
 <body>
@@ -232,7 +254,6 @@ body {
     <!-- 存放头像 -->
     <!-- <img src="/images/head2.png" alt="" size="20" height="20" width="20" class="avatar"> -->
   </div>
-  
   <div class="container">
     <div class="block-container">
         <div class="block block1" id="database">
@@ -240,6 +261,7 @@ body {
         <div class="db"><button id="db1">Database1</button></div><hr>
         <div class="db"><button id="db2">Database2</button></div><hr>
         <div class="db"><button id="db3">Database3</button></div><hr>
+        <div  class="add" ><button id="fileInput">+</button></div>
         </div>
         <div class="block block2">
         <!-- 第二个大板块内容 -->
@@ -257,13 +279,8 @@ body {
                 <!-- 用户与系统交互内容 -->
             </div>
             <div class="input-area">
-                <!-- 用户输入区域 -->
-                <!-- <form method="post" style="height: 100%;" action="http://127.0.0.1:8080/public/submit_and_get"> -->
-                <!-- <form action="/ww" style="height: 100%;" method="post"> -->
-               
                 <textarea class="form-textarea" id="input-textarea" placeholder="请先选择功能模块[数据库/表操作] / [数据处理]" name="query"></textarea>
                 <button type="submit" class="form-submit" id="submit">提交</button>
-                <!-- </form> -->
             </div>
             <input type="text" name="user[user][account_system_type]" value="NATIVE_USER">
             <input type="text" name="user[user][native_user][name]" value="someuser">
@@ -275,74 +292,107 @@ body {
   </div>
   <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script>
-  alert("欢迎！");
-   // 获取相关元素
+  // alert("欢迎！");
+  // 获取相关元素
   const dbTableButton = document.getElementById('db-table-button');
   const dataProcessingButton = document.getElementById('data-processing-button');
   const inputTextarea = document.getElementById('input-textarea');
   const btn=document.getElementById("submit");
   const interaciton=document.getElementById("interaction");
   const username0=document.getElementById("username");
+  const fileInput=document.getElementById("fileInput");
    // 登陆后获取用户名
-   fetch('/get-username')
-      .then(response => response.json())
-      .then(data => {
-        username0.textContent = data.Name;
-      })
-      .catch(error => console.log(error));
+  fetch('/get-username')
+    .then(response => response.json())
+    .then(data => {
+      username0.textContent = data.Name;
+    })
+    .catch(error => console.log(error));
 
-   // 点击 "数据库/表" 按钮时修改输入区域的期待输入内容
-   dbTableButton.addEventListener('click', function() {
-     inputTextarea.placeholder = 'CREATE DATABASE [IF NOT EXISTS] database;\nDROP DATABASE [IF EXISTS] database;\nCREATE TABLE [IF NOT EXISTS] tbl_name TID [=] value\nDROP TABLE [IF EXISTS] tbl_name';
-   });
-
+  // 点击 "数据库/表" 按钮时修改输入区域的期待输入内容
+  dbTableButton.addEventListener('click', function() {
+    inputTextarea.placeholder = 'CREATE DATABASE [IF NOT EXISTS] database;\nDROP DATABASE [IF EXISTS] database;\nCREATE TABLE [IF NOT EXISTS] tbl_name TID [=] value\nDROP TABLE [IF EXISTS] tbl_name';
+  });
    // 点击 "数据处理" 按钮时修改输入区域的期待输入内容
-   dataProcessingButton.addEventListener('click', function() {
+  dataProcessingButton.addEventListener('click', function() {
      inputTextarea.placeholder = "SELECT [DISTINCT] select_expr [, select_expr] ... [FROM table_reference] [WHERE where_condition] [GROUP BY column]\nGRANT SELECT/REVOKE [CONSTRAINTS]([DATA]) ON [TABLE] TO [USER]";
-   });
-
-   function showOptions() {
+  });
+  //显示登出注销选项栏
+  function showOptions() {
       var options = document.getElementById("options");
       options.classList.add("visible");
   }
-
-    function hideOptions() {
-      var options = document.getElementById("options");
-      options.classList.remove("visible");
+  //隐藏选项栏
+  function hideOptions() {
+    var options = document.getElementById("options");
+    options.classList.remove("visible");
   }
-
-    function logout() {
-      var confirmation = confirm("确定要登出吗？");
-      if (confirmation) {
-        alert("登出成功！");
-        // 返回登录界面
-        window.location.href="Login.html";
+  //处理登出事件
+  function logout() {
+    var confirmation = confirm("确定要登出吗？");
+    if (confirmation) {
+      alert("登出成功！");
+      // 返回登录界面
+      window.location.href="Login.html";
+    }
+  }
+  //处理注销事件
+  function logoff() {
+    var confirmation = confirm("确定要注销吗？");
+    if (confirmation) {
+      // 注销已有账号并返回欢迎界面
+      $.ajax({
+        url: "/process-logoff",
+        type: "POST",
+        data: {"username":username0.textContent},
+        dataType: "json",
+        success: function(response) {
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          console.error("请求失败，状态码：" + xhr.status + "，错误信息：" + error);
+        }
+      });
+      alert("注销成功");
+      window.location.href="Login.html";
       }
     }
-
-    function logoff() {
-      var confirmation = confirm("确定要注销吗？");
-      if (confirmation) {
-        // 注销已有账号并返回欢迎界面
+   //选择sql文件生成数据库/表
+  fileInput.addEventListener('click', function() {
+    console.log("选择sql文件...");
+    var content;
+    const input = document.createElement('input');
+    input.type = 'file';
+    // 当用户选择文件时触发
+    input.addEventListener('change', () => {
+      // 获取用户选择的文件
+      const file = input.files[0];
+      const reader=new FileReader();
+      reader.addEventListener('load',()=>{
+        content=reader.result;
+        console.log("Content: "+content);
+        interaciton.innerHTML=interaciton.innerHTML+`<div>${content}</div><hr>`
+        // 发送POST请求，上传文件
         $.ajax({
-          url: "/process-logoff",
-          type: "POST",
-          data: {"username":username0.textContent},
-          dataType: "json",
-          success: function(response) {
-            console.log(response);
-          },
-          error: function(xhr, status, error) {
-            console.error("请求失败，状态码：" + xhr.status + "，错误信息：" + error);
-          }
-        });
-        alert("注销成功");
-        window.location.href="Login.html";
-      }
-    }
-
+        url: "/create-dbtb",
+        type: "POST",
+        data: {"content":content},
+        dataType: "json",
+        success: function(response) {
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          console.error("请求失败，状态码：" + xhr.status + "，错误信息：" + error);
+        }
+      });
+      });
+      // 开始读取文件
+      reader.readAsText(file);
+    });
+    input.click();
+  });
    //点击提交后将输入内容显示到交互区
-   btn.addEventListener("click",()=>{
+  btn.addEventListener("click",()=>{
     if(inputTextarea.value!=""){
     //网页更新查询内容
     interaciton.innerHTML=interaciton.innerHTML+`<div> ${inputTextarea.value}</div><hr>`;
@@ -365,43 +415,26 @@ body {
     };
     //转换成JSON
     var jsonData = JSON.stringify(formData);
-    //AJAX请求
-    $.ajax({
-      url: "http://localhost:8000/public/submit_and_get",
-      type: "POST",
-      data: jsonData,
-      dataType: "json",
-      xhrFields: {
-        withCredentials: true
-      },
-      success: function(response) {
+    // xhr发送请求
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    console.log("发送请求...");
+    xhr.open("POST", "http://localhost:8000/ok",true);
+    xhr.setRequestHeader("Content-Type", "text/plain");
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
         console.log(response);
-      },
-      error: function(xhr, status, error) {
-        console.error("请求失败，状态码：" + xhr.status + "，错误信息：" + error);
+      } else {
+        console.error('Request failed.  Returned status of', xhr.status);
       }
-    });
-
-    //xhr发送请求
-    // var xhr = new XMLHttpRequest();
-    // xhr.withCredentials = true;
-    // console.log("发送请求...");
-    // xhr.open("POST", "http://localhost:8000/public/submit_and_get",true);
-    // xhr.setRequestHeader("Content-Type", "text/plain");
-    // xhr.onload = function() {
-    //   if (xhr.status === 200) {
-    //     const response = JSON.parse(xhr.responseText);
-    //     console.log(response);
-    //   } else {
-    //     console.error('Request failed.  Returned status of', xhr.status);
-    //   }
-    // };
-    // xhr.send(jsonData);
+    };
+    xhr.send(jsonData);
     console.log("JSONdata:"+jsonData);
     console.log("执行完毕！");
     //清空输入区域
     inputTextarea.value="";
-   });
+  });
   </script>
 </body>
 </html>

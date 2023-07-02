@@ -234,29 +234,30 @@ app.post('/process-logoff',(req,res)=>{
 
 /**********************接受主界面查询语句****************************/
 //TODO：与SCDB对接
-/*
-let sqlHall="";
-let containerHall=[];
-app.post('/process-query',(req,res)=>{
-  req.on("data", (chunk) => {
-    console.log("执行：");
-    containerHall.push(chunk);
+
+//TODO：创建数据库/表
+var newDbTbSql=[];
+app.post('/create-dbtb',(req,res)=>{
+  req.on("data",(chunk)=>{
+    console.log("执行中...");
+    newDbTbSql.push(chunk);
   });
-  console.log(`--------------------`);
   req.on("end", () => {
-  //获取查询语句
-  containerHall = Buffer.concat(containerHall).toString();
-  containerHall = querystring.parse(containerHall);
-  console.log(containerHall.query);
-  //查询后清空containerHall
-  containerHall=[];
+    newDbTbSql = Buffer.concat(newDbTbSql).toString();
+    newDbTbSql = querystring.parse(newDbTbSql);
+    // console.log(`${newDbTbSql.content}`);
+    connectInfo.query(`${newDbTbSql.content}`,(err,result,fields)=>{
+      if(err){
+        console.log('[CREATE ERROR] - ',err.message);
+        newDbTbSql=[];
+        return;
+      }
+      console.log("执行成功！");
+      
+      newDbTbSql=[];
+    })
   });
-});*/
-// app.post('/ww', (req, res) => {
-//   const requestData = req.body;
-//   console.log("requestdata:");
-//   console.log(JSON.stringify(requestData));
-//   res.send('请求已收到');
-// });
+});
+
 //启动服务器
 var server=app.listen(port,()=>{});
